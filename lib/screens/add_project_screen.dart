@@ -126,6 +126,9 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                         if (value == null || value.trim().isEmpty) {
                           return 'Le titre est obligatoire';
                         }
+                        if (value.trim().length < 3) {
+                          return 'Minimum 3 caractères';
+                        }
                         return null;
                       },
                     ),
@@ -141,8 +144,8 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                         if (value == null || value.trim().isEmpty) {
                           return 'La description est obligatoire';
                         }
-                        if (value.length < 20) {
-                          return 'Minimum 20 caractères';
+                        if (value.trim().length < 10) {
+                          return 'Minimum 10 caractères';
                         }
                         return null;
                       },
@@ -176,8 +179,9 @@ class _AddProjectScreenState extends State<AddProjectScreen> {
                           child: TextField(
                             controller: _technologyController,
                             decoration: const InputDecoration(
-                              hintText: 'Flutter, Firebase...',
+                              hintText: 'Ex: Flutter',
                             ),
+                            onSubmitted: (_) => _addTechnology(),
                           ),
                         ),
                         IconButton(

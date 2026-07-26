@@ -130,3 +130,24 @@ Voici quelques captures d'écran de l'application :
 - Étendre les écrans avec des images ou un média enrichi.
 - Ajouter un tri et un filtrage plus avancés pour les projets.
 
+## Architecture technique
+
+- **Entrée**: `lib/main.dart` initialise l'application et le routeur.
+- **Navigation**: `go_router` via `lib/router/app_router.dart`.
+- **Écrans**: composants sous `lib/screens/` (Home, Projects, ProjectDetail, Add).
+- **Widgets réutilisables**: sous `lib/widgets/` (`ProjectCard`, `PortfolioScaffold`, `SearchBarWidget`).
+- **Données**: données locales dans `lib/data/project_data.dart`.
+
+## Widgets utilisés
+
+- `PortfolioScaffold`: structure commune avec AppBar et navigation.
+- `ProjectCard`: aperçu d'un projet dans la liste.
+- `SearchBarWidget`: champ de recherche réutilisable.
+- `ResponsiveLayout`: utilitaire pour mobile/tablette.
+
+## Prochaines améliorations
+
+- Persistance locale (Hive / SharedPreferences / SQLite).
+- Tests d'intégration et couverture complète.
+- Export d'un CSV des projets.
+

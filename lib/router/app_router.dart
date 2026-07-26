@@ -21,7 +21,10 @@ final GoRouter appRouter = GoRouter(
       path: '/project/:id',
       name: 'projectDetail',
       builder: (context, state) {
-        final id = state.pathParameters['id']!;
+        final id = state.pathParameters['id'];
+        if (id == null || id.isEmpty) {
+          return const ProjectsScreen();
+        }
         return ProjectDetailScreen(projectId: id);
       },
     ),
