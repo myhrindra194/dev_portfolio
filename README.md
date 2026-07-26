@@ -85,6 +85,39 @@ Ce projet est un portfolio d'applications Flutter conçu pour présenter des pro
    flutter analyze
    ```
 
+## Aperçu
+
+Voici quelques captures d'écran de l'application :
+
+<!-- Paires Light / Dark pour les écrans principaux -->
+<table>
+  <tr>
+    <td align="center"><strong>Home (Light)</strong></td>
+    <td align="center"><strong>Home (Dark)</strong></td>
+    <td align="center"><strong>Projects (Light)</strong></td>
+    <td align="center"><strong>Projects (Dark)</strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/homescreen-light.png" alt="Home light" width="260" /></td>
+    <td><img src="screenshots/homescreen-dark.png" alt="Home dark" width="260" /></td>
+    <td><img src="screenshots/project-lists-light.png" alt="Projects light" width="260" /></td>
+    <td><img src="screenshots/project-lists-dark.png" alt="Projects dark" width="260" /></td>
+  </tr>
+  <tr>
+    <td align="center"><strong>Details (Light)</strong></td>
+    <td align="center"><strong>Details (Dark)</strong></td>
+    <td align="center"><strong>Add (Light)</strong></td>
+    <td align="center"><strong>Add (Dark)</strong></td>
+  </tr>
+  <tr>
+    <td><img src="screenshots/project-screen-details-light.png" alt="Details light" width="260" /></td>
+    <td><img src="screenshots/project-screen-details-dark.png" alt="Details dark" width="260" /></td>
+    <td><img src="screenshots/add-project.png" alt="Add project" width="260" /></td>
+    <td><img src="screenshots/project-added2.png" alt="Add project confirmation" width="260" /></td>
+  </tr>
+</table>
+
+
 ## Remarques
 
 - Ce portfolio fonctionne principalement avec des données locales définies dans `lib/data/project_data.dart`.
