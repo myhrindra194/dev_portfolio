@@ -1,10 +1,12 @@
-import 'package:dev_portfolio/data/project_data.dart';
 import 'package:dev_portfolio/models/project.dart';
 import 'package:dev_portfolio/models/project_status.dart';
+import 'package:dev_portfolio/providers/project_provider.dart';
+import 'package:dev_portfolio/utils/responsive_layout.dart';
 import 'package:dev_portfolio/widgets/portfolio_scaffold.dart';
 import 'package:dev_portfolio/widgets/technology_chip.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ProjectDetailScreen extends StatelessWidget {
@@ -29,7 +31,8 @@ class ProjectDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Project? project = projects.cast<Project?>().firstWhere(
+    final provider = context.watch<ProjectProvider>();
+    final Project? project = provider.projects.cast<Project?>().firstWhere(
       (p) => p?.id == projectId,
       orElse: () => null,
     );
@@ -50,11 +53,12 @@ class ProjectDetailScreen extends StatelessWidget {
     }
 
     final theme = Theme.of(context);
+    final isMobile = ResponsiveLayout.isMobile(context);
 
     return PortfolioScaffold(
       title: project.title,
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(isMobile ? 16 : 20),
         children: [
           Card(
             elevation: 4,
@@ -62,7 +66,7 @@ class ProjectDetailScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -132,7 +136,7 @@ class ProjectDetailScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Padding(
-              padding: const EdgeInsets.all(20),
+              padding: EdgeInsets.all(isMobile ? 16 : 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

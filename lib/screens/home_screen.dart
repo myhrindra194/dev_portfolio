@@ -1,18 +1,23 @@
-import 'package:dev_portfolio/data/project_data.dart';
+import 'package:dev_portfolio/providers/project_provider.dart';
+import 'package:dev_portfolio/utils/responsive_layout.dart';
 import 'package:dev_portfolio/widgets/portfolio_scaffold.dart';
 import 'package:dev_portfolio/widgets/project_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final recentProjects = [...projects]
+    final provider = context.watch<ProjectProvider>();
+    final recentProjects = [...provider.projects]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     final theme = Theme.of(context);
+    final isMobile = ResponsiveLayout.isMobile(context);
+    final horizontalPadding = isMobile ? 16.0 : 24.0;
 
     return PortfolioScaffold(
       title: 'Dev Portfolio',
@@ -22,10 +27,10 @@ class HomeScreen extends StatelessWidget {
         label: const Text('Ajouter un projet'),
       ),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(horizontalPadding),
         children: [
           Container(
-            padding: const EdgeInsets.all(24),
+            padding: EdgeInsets.all(isMobile ? 20 : 24),
             decoration: BoxDecoration(
               color: theme.colorScheme.primary.withValues(alpha: 0.08),
               borderRadius: BorderRadius.circular(20),

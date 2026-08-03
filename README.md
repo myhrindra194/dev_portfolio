@@ -10,6 +10,8 @@ Ce projet est un portfolio d'applications Flutter conçu pour présenter des pro
 - Formulaire pour ajouter un nouveau projet localement.
 - Thème clair / sombre basculable.
 - Navigation fluide avec `go_router`.
+- Gestion d'état centralisée via `Provider`.
+- Interface responsive pour mobile, tablette et desktop.
 
 ## Structure du projet
 
@@ -50,6 +52,7 @@ Ce projet est un portfolio d'applications Flutter conçu pour présenter des pro
 ## Dépendances principales
 
 - `go_router` : navigation déclarative.
+- `provider` : gestion d'état avec `ChangeNotifier`.
 - `intl` : formatage de dates.
 - `url_launcher` : ouverture de liens GitHub externes.
 
@@ -83,6 +86,11 @@ Ce projet est un portfolio d'applications Flutter conçu pour présenter des pro
 6. Pour analyser le projet :
    ```bash
    flutter analyze
+   ```
+
+7. Pour exécuter les tests :
+   ```bash
+   flutter test
    ```
 
 ## Aperçu
@@ -121,7 +129,7 @@ Voici quelques captures d'écran de l'application :
 ## Remarques
 
 - Ce portfolio fonctionne principalement avec des données locales définies dans `lib/data/project_data.dart`.
-- Le formulaire d'ajout de projet ajoute les projets en mémoire uniquement pendant l'exécution.
+- Le formulaire d'ajout de projet ajoute les projets via le `ProjectProvider` pour garder l'état centralisé.
 - Les liens GitHub s'ouvrent dans le navigateur avec `url_launcher`.
 
 ## À personnaliser
@@ -132,10 +140,11 @@ Voici quelques captures d'écran de l'application :
 
 ## Architecture technique
 
-- **Entrée**: `lib/main.dart` initialise l'application et le routeur.
+- **Entrée**: `lib/main.dart` initialise l'application, le `ProjectProvider` et le routeur.
 - **Navigation**: `go_router` via `lib/router/app_router.dart`.
 - **Écrans**: composants sous `lib/screens/` (Home, Projects, ProjectDetail, Add).
 - **Widgets réutilisables**: sous `lib/widgets/` (`ProjectCard`, `PortfolioScaffold`, `SearchBarWidget`).
+- **État**: `lib/providers/project_provider.dart` centralise l'ajout, la suppression et la mise à jour des projets.
 - **Données**: données locales dans `lib/data/project_data.dart`.
 
 ## Widgets utilisés
@@ -143,7 +152,18 @@ Voici quelques captures d'écran de l'application :
 - `PortfolioScaffold`: structure commune avec AppBar et navigation.
 - `ProjectCard`: aperçu d'un projet dans la liste.
 - `SearchBarWidget`: champ de recherche réutilisable.
-- `ResponsiveLayout`: utilitaire pour mobile/tablette.
+- `ResponsiveLayout`: utilitaire pour mobile/tablette/desktop.
+
+## Provider, responsivité et tests
+
+- Le `ProjectProvider` expose une liste en lecture seule et permet d'ajouter, supprimer et mettre à jour des projets avec `notifyListeners()`.
+- Les écrans utilisent `context.watch()` et `context.read()` pour maintenir une architecture propre.
+- La logique responsive repose sur `MediaQuery` via `lib/utils/responsive_layout.dart`.
+- Les tests unitaires et widgets sont regroupés dans `test/` et exécutés automatiquement via GitHub Actions.
+
+## Workflow GitHub Actions
+
+Le workflow défini dans `.github/workflows/flutter.yml` installe Flutter, exécute `flutter pub get`, `flutter analyze` puis `flutter test` à chaque push et pull request.
 
 ## Prochaines améliorations
 

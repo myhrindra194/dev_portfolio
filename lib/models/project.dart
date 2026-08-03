@@ -1,4 +1,5 @@
 import 'package:dev_portfolio/models/project_status.dart';
+import 'package:flutter/foundation.dart';
 
 class Project {
   final String id;
@@ -32,10 +33,39 @@ class Project {
       id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
-      technologies: technologies ?? this.technologies,
+      technologies: technologies == null
+          ? List<String>.from(this.technologies)
+          : List<String>.from(technologies),
       githubUrl: githubUrl ?? this.githubUrl,
       createdAt: createdAt ?? this.createdAt,
       status: status ?? this.status,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'technologies': technologies,
+      'githubUrl': githubUrl,
+      'createdAt': createdAt.toIso8601String(),
+      'status': status.name,
+    };
+  }
+
+  factory Project.fromJson(Map<String, dynamic> json) {
+    return Project(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      technologies: List<String>.from(json['technologies'] as List),
+      githubUrl: json['githubUrl'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      status: ProjectStatus.values.firstWhere(
+        (value) => value.name == json['status'],
+        orElse: () => ProjectStatus.inProgress,
+      ),
     );
   }
 
@@ -47,7 +77,7 @@ class Project {
         other.id == id &&
         other.title == title &&
         other.description == description &&
-        _listEquals(other.technologies, technologies) &&
+        listEquals(other.technologies, technologies) &&
         other.githubUrl == githubUrl &&
         other.createdAt == createdAt &&
         other.status == status;
@@ -55,20 +85,14 @@ class Project {
 
   @override
   int get hashCode {
-    return id.hashCode ^
-        title.hashCode ^
-        description.hashCode ^
-        technologies.fold<int>(0, (p, e) => p ^ e.hashCode) ^
-        githubUrl.hashCode ^
-        createdAt.hashCode ^
-        status.hashCode;
-  }
-
-  bool _listEquals(List a, List b) {
-    if (a.length != b.length) return false;
-    for (var i = 0; i < a.length; i++) {
-      if (a[i] != b[i]) return false;
-    }
-    return true;
+    return Object.hash(
+      id,
+      title,
+      description,
+      Object.hashAll(technologies),
+      githubUrl,
+      createdAt,
+      status,
+    );
   }
 }
