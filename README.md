@@ -1,23 +1,24 @@
 # Dev Portfolio
 
-Ce projet est un portfolio d'applications Flutter conçu pour présenter des projets, naviguer entre les détails, et ajouter de nouveaux projets localement.
+Ce projet est un portfolio d'applications Flutter conçu pour présenter des projets, naviguer entre les détails, rechercher et filtrer les projets, et ajouter de nouveaux projets localement.
 
 ## Fonctionnalités
 
-- Page d'accueil avec un message de bienvenue et les derniers projets.
-- Liste de projets consultable et filtrable par statut.
-- Page de détail de projet avec lien GitHub cliquable.
-- Formulaire pour ajouter un nouveau projet localement.
-- Thème clair / sombre basculable.
-- Navigation fluide avec `go_router`.
-- Gestion d'état centralisée via `Provider`.
-- Interface responsive pour mobile, tablette et desktop.
+- Écran d'accueil avec un message de bienvenue et aperçu des derniers projets.
+- Liste de projets avec recherche par titre/description/technologie.
+- Filtrage des projets par statut (`Completed`, `In Progress`, `Planned`).
+- Affichage responsive en liste ou grille selon la taille d'écran.
+- Détail de projet avec statut, technologies, date de création et lien GitHub cliquable.
+- Formulaire d'ajout de projet local avec saisie de technologies et validation.
+- Thème clair / sombre basculable depuis l'AppBar.
+- Navigation fluide gérée par `go_router`.
+- Gestion d'état centralisée via `provider`.
 
 ## Structure du projet
 
 - `lib/main.dart`
   - Point d'entrée de l'application.
-  - Utilise `MaterialApp.router` pour la navigation et les thèmes.
+  - Initialise `ProjectProvider` et `MaterialApp.router`.
 
 - `lib/router/app_router.dart`
   - Définit les routes principales de l'application :
@@ -27,27 +28,30 @@ Ce projet est un portfolio d'applications Flutter conçu pour présenter des pro
     - `/add` : `AddProjectScreen`
 
 - `lib/screens/`
-  - `home_screen.dart` : page d'accueil et aperçu des derniers projets.
-  - `projects_screen.dart` : recherche, filtre et affichage de la liste des projets.
-  - `project_detail_screen.dart` : détails du projet sélectionné avec accès GitHub.
-  - `add_project_screen.dart` : formulaire d'ajout de projet.
+  - `home_screen.dart` : page d'accueil avec résumé des projets récents.
+  - `projects_screen.dart` : liste des projets, recherche, filtre par statut, affichage listé ou en grille.
+  - `project_detail_screen.dart` : détails du projet sélectionné avec CTA GitHub.
+  - `add_project_screen.dart` : formulaire de création de nouveau projet avec technologies dynamiques.
 
 - `lib/widgets/`
-  - `portfolio_scaffold.dart` : structure d'interface commune avec app bar et retour.
-  - `project_card.dart` : carte de projet pour la liste et les aperçus.
-  - `search_bar_widget.dart` : champ de recherche réutilisable.
-  - `technology_chip.dart` : puce de technologie utilisée par les projets.
+  - `portfolio_scaffold.dart` : structure commune avec barre d'application, bouton thème et retour.
+  - `project_card.dart` : carte projet réutilisable pour les vues liste et grille.
+  - `search_bar_widget.dart` : composant de recherche réutilisable.
+  - `technology_chip.dart` : puce stylisée pour afficher les technologies.
+
+- `lib/utils/`
+  - `responsive_layout.dart` : utilitaire pour détecter mobile / tablette / desktop.
 
 - `lib/data/project_data.dart`
-  - Contient les données locales de projets.
+  - Contient les données locales de projets utilisées au démarrage.
 
 - `lib/models/`
-  - `project.dart` : modèle de données pour un projet.
-  - `project_status.dart` : statut de projet (`completed`, `inProgress`, `planned`).
+  - `project.dart` : modèle de données d'un projet avec sérialisation JSON.
+  - `project_status.dart` : définition des statuts de projet et labels associés.
 
 - `lib/theme/app_theme.dart`
   - Définit les thèmes clair et sombre.
-  - Gère le basculement du mode d'affichage.
+  - Gère le basculement de thème via `ValueNotifier<ThemeMode>`.
 
 ## Dépendances principales
 
@@ -125,17 +129,17 @@ Voici quelques captures d'écran de l'application :
   </tr>
 </table>
 
-
 ## Remarques
 
 - Ce portfolio fonctionne principalement avec des données locales définies dans `lib/data/project_data.dart`.
 - Le formulaire d'ajout de projet ajoute les projets via le `ProjectProvider` pour garder l'état centralisé.
+- Le détail de projet permet d'afficher un statut, des technologies et un lien GitHub.
 - Les liens GitHub s'ouvrent dans le navigateur avec `url_launcher`.
 
 ## À personnaliser
 
 - Ajouter un stockage persistant pour sauvegarder les projets.
-- Étendre les écrans avec des images ou un média enrichi.
+- Étendre les écrans avec des images, des captures d'écran ou du média enrichi.
 - Ajouter un tri et un filtrage plus avancés pour les projets.
 
 ## Architecture technique
@@ -143,16 +147,18 @@ Voici quelques captures d'écran de l'application :
 - **Entrée**: `lib/main.dart` initialise l'application, le `ProjectProvider` et le routeur.
 - **Navigation**: `go_router` via `lib/router/app_router.dart`.
 - **Écrans**: composants sous `lib/screens/` (Home, Projects, ProjectDetail, Add).
-- **Widgets réutilisables**: sous `lib/widgets/` (`ProjectCard`, `PortfolioScaffold`, `SearchBarWidget`).
+- **Widgets réutilisables**: sous `lib/widgets/` (`ProjectCard`, `PortfolioScaffold`, `SearchBarWidget`, `TechnologyChip`).
+- **Utilitaires**: `lib/utils/responsive_layout.dart` gère les breakpoints mobile / tablette / desktop.
 - **État**: `lib/providers/project_provider.dart` centralise l'ajout, la suppression et la mise à jour des projets.
 - **Données**: données locales dans `lib/data/project_data.dart`.
 
 ## Widgets utilisés
 
-- `PortfolioScaffold`: structure commune avec AppBar et navigation.
-- `ProjectCard`: aperçu d'un projet dans la liste.
+- `PortfolioScaffold`: structure commune avec AppBar, bouton de retour et bascule thème.
+- `ProjectCard`: aperçu d'un projet dans la liste ou la grille.
 - `SearchBarWidget`: champ de recherche réutilisable.
-- `ResponsiveLayout`: utilitaire pour mobile/tablette/desktop.
+- `TechnologyChip`: puce de technologie avec icône.
+- `ResponsiveLayout`: utilitaire pour détecter la taille d'écran et adapter l'affichage.
 
 ## Provider, responsivité et tests
 
